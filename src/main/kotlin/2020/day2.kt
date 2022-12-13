@@ -40,6 +40,7 @@ data class Entry(
     fun partOne() = password.count { it == char } in range
 
     fun partTwo() = (password[range.first-1] == char) xor (password[range.last-1] == char)
+   // fun partTwo() = ((password[range.first-1] == char && password[range.last-1] != char) || (password[range.first-1] != char && password[range.last-1] == char))
     companion object{
         fun parse(line: String) = Entry(
             password = line.substringAfter(": "),
