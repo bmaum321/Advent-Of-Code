@@ -2,21 +2,54 @@ package `2020`
 
 import java.io.File
 
-typealias Color = String
-typealias Rule = Set<String>
+
 
 private const val SHINY_GOLD = "shiny gold"
 
 fun main() {
-    val rules: Map<Color, Rule> = buildBagTree()
+    val rules: Map<String, Set<String>> = buildBagTree()
     val containers = findContainersDFS(rules)
     println(containers)
     println()
     println(containers.size)
 
+    val partTwo = partTwo()
+    val result = partTwo.getChildrenCountBFS(SHINY_GOLD)
+    println(result)
+
 }
 
-fun findContainersDFS(rules: Map<Color, Set<String>>): Set<Color> {
+val digits = "\\d+".toRegex()
+private fun Map<String, Set<String>>.getChildrenCountBFS(color: String): Int {
+    val children = getOrDefault(color, setOf())
+    if(children.isEmpty()) return 0
+    var total = 0
+    for (child in children) {
+        val count = digits.findAll(child).first().value.toInt()
+        val bag = digits.replace(child, "").trim()
+        total+=count+count*getChildrenCountBFS(bag)
+    }
+    return total
+}
+
+fun partTwo(): Map<String, Set<String>> {
+    val rules = hashMapOf<String, Set<String>>()
+    File("src/main/kotlin/inputs/2020/day7.txt")
+        .forEachLine { line ->
+            val (parent, allChildren) = line
+                .replace(Regex("bags?\\.?"), "") //remove word bags or bag.
+                .split("contain")
+                .map { it.trim() }
+            val rule =
+                if (allChildren.contains("no other")) emptySet()
+                else allChildren.split(',').map { it.trim() }.toSet()
+            rules[parent] = rule
+        }
+    return rules
+
+}
+
+fun findContainersDFS(rules: Map<String, Set<String>>): Set<String> {
     var known = setOf(SHINY_GOLD)
     var next = setOf(SHINY_GOLD) + rules[SHINY_GOLD]!!
     while(true) {
@@ -29,8 +62,8 @@ fun findContainersDFS(rules: Map<Color, Set<String>>): Set<Color> {
     return known - SHINY_GOLD
 }
 
-fun buildBagTree(): Map<Color, Set<String>> {
-    val rules = hashMapOf<Color, Rule>()
+fun buildBagTree(): Map<String, Set<String>> {
+    val rules = hashMapOf<String, Set<String>>()
     File("src/main/kotlin/inputs/2020/day7.txt")
         .forEachLine { line ->
             val (parent, allChildren) = line
