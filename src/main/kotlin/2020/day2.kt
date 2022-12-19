@@ -1,5 +1,3 @@
-
-
 import java.io.File
 
 fun main() {
@@ -32,24 +30,36 @@ fun main() {
 }
 
 data class Entry(
-    val range: IntRange,
-    val char: Char,
-    val password: String
+        val range: IntRange,
+        val char: Char,
+        val password: String
 ) {
 
     fun partOne() = password.count { it == char } in range
 
-    fun partTwo() = (password[range.first-1] == char) xor (password[range.last-1] == char)
-   // fun partTwo() = ((password[range.first-1] == char && password[range.last-1] != char) || (password[range.first-1] != char && password[range.last-1] == char))
-    companion object{
+    fun partTwo() = (password[range.first - 1] == char) xor (password[range.last - 1] == char)
+
+    // fun partTwo() = ((password[range.first-1] == char && password[range.last-1] != char) || (password[range.first-1] != char && password[range.last-1] == char))
+    companion object {
         fun parse(line: String) = Entry(
-            password = line.substringAfter(": "),
-            char = line.substringAfter(" ").substringBefore(":").single() ,
-            range = IntRange(line.substringBefore(" ").split("-").first().toInt(), line.substringBefore(" ").split("-").last().toInt())
+                password = line.substringAfter(": "),
+                char = line.substringAfter(" ").substringBefore(":").single(),
+                range = IntRange(
+                        line
+                            .substringBefore(" ")
+                            .split("-")
+                            .first()
+                            .toInt(),
+                        line
+                            .substringBefore(" ")
+                            .split("-")
+                            .last()
+                            .toInt()
+                )
         )
 
-        }
     }
+}
 
 
 

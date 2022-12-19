@@ -40,7 +40,7 @@ fun main() {
      * Jetbrains solution
      */
     val secondAnswer = groups.map { group ->
-        group.split(nl).map(String::toSet)
+        group.split(nl).map { it.toSet() }
     }.sumOf { answerSets ->
         answerSets.reduce { a, b -> a intersect b  }.count()
     }
