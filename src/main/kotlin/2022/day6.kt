@@ -12,16 +12,12 @@ fun main() {
     val part1 = input
         .windowed(4,1)
         .indexOfFirst { it
-            .toCharArray()
-            .distinct()
-            .count() == 4 } + 4 // add 4 to get the start index of string
+            .toSet().size == 4 } + 4 // add 4 to get the start index of string
     println(part1)
     val part2 = input
         .windowed(14, 1)
         .indexOfFirst { it
-            .toCharArray()
-            .distinct()
-            .count() == 14 } + 14
+            .toSet().size == 4 } + 14
     println(part2)
 }
 
