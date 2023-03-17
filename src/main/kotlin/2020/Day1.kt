@@ -42,6 +42,7 @@ fun main() {
 
 }
 
+//This will allow for selecting the same number multiple times as well
 fun List<Int>.findTripleOfSum(): Triple<Int, Int, Int>? =
     firstNotNullOfOrNull { x ->
         findPairOfSum(2020 - x)?.let { pair ->
@@ -50,11 +51,17 @@ fun List<Int>.findTripleOfSum(): Triple<Int, Int, Int>? =
 
 }
 
+// There needs to be a check here if half the sum is in the list
 fun List<Int>.findPairOfSum(sum: Int): Pair<Int, Int>? {
-    val complements = associateBy { sum - it }
+    // There needs to be a check here if half the sum is in the list
+    val complements = associateBy { sum - it }.toMutableMap()
+    if(sum/2 in complements.keys && this.count { it == sum / 2 } < 2){
+        complements.remove(sum/2)
+    }
     return firstNotNullOfOrNull { number ->
         complements[number]?.let { complement ->
             Pair(number, complement)
         }
     }
+
 }
