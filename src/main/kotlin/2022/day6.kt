@@ -11,9 +11,9 @@ fun main() {
 
     val part1 = input
         .windowed(4,1)
-        .indexOfFirst { it
-            .toSet().size == 4 } + 4 // add 4 to get the start index of string
+        .indexOfFirst { it.toSet().size == 4 } + 4 // add 4 to get the start index of string
     println(part1)
+
     val part2 = input
         .windowed(14, 1)
         .indexOfFirst { it
