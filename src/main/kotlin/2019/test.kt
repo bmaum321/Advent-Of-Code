@@ -1,6 +1,15 @@
 fun main() {
-    val data = listOf(0,1,1,1,1,1,0,1,1,1,1)
-    val sub = data.subList(4, data.lastIndex + 1)
+    val morningNotification = 51
+    val eveningNotification = 135
 
-    sub.forEach(::println)
+    printNotificationSummary(morningNotification)
+    printNotificationSummary(eveningNotification)
+}
+
+
+fun printNotificationSummary(numberOfMessages: Int) {
+    when(numberOfMessages) {
+            in 0..100 -> { println("You have $numberOfMessages notifications")}
+        else -> { println("Your phone is blowing up! You have 99+ notifications")}
+    }
 }

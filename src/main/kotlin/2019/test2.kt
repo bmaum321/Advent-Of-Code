@@ -16,7 +16,7 @@ fun main() {
     graph.forEach { graphLine ->
         graphLine[0] = '+'
         graphLine[graphLine.lastIndex] = '+'
-        graphLine.addAll(0, listOf(' ',' ',' ',' ',' ',' ',' '))
+        graphLine.addAll(listOf(' ',' ',' ',' ',' ',' ',' '))
     }
 
     graph[maxY/2][2] = '$'
