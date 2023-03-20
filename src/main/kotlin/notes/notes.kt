@@ -17,20 +17,6 @@ fun main() {
     answer.forEach(::println)
 
 
-    val complements = nums.associateBy { target - it }.toMutableMap()
-    if(target/2 in complements.keys && ((nums.count { it == target / 2}) < 2)) {
-        complements.remove(3)
-    }
-    complements.forEach(::println)
-    val answer2 = nums.firstNotNullOfOrNull { number ->
-        complements[number]?.let { complement ->
-            Pair(complement, number)
-        }
-
-
-    }
-
-    println(answer2)
 
 
     // Get all substrings of a string --------------------------------------->
@@ -121,5 +107,72 @@ fun Int.containsIsolatedPair(): Boolean {
     return digits.groupBy { it }.any { it.value.size == 2 }
 }
 
+
+/**
+ * Functions to sort a list of ints -------------------------------------------------->
+ */
+fun List<Int>.sort(): List<Int> {
+    val copy = this.toMutableList()
+    var i = 0
+    while(!copy.isSorted()){
+        if(i == copy.lastIndex){
+            i = 0
+        }
+        if(copy[i]>copy[i+1]) {
+            copy.swap(i,i+1)
+            i++
+        } else i++
+
+    }
+
+    return copy.toList()
+}
+
+fun List<Int>.isSorted(): Boolean {
+    return this.zipWithNext().all { it.first <= it.second }
+}
+
+fun <T> MutableList<T>.swap(index1: Int, index2: Int){
+    val tmp = this[index1]
+    this[index1] = this[index2]
+    this[index2] = tmp
+}
+
+/**
+ * PASCALS TRIANGLE
+ * ->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ */
+
+
+    fun generate(numRows: Int): List<List<Int>> {
+        val a = mutableListOf<MutableList<Int>>()
+        when (numRows) {
+            0 -> return emptyList()
+            1 -> return listOf(listOf(1))
+            2 -> return listOf(listOf(1), listOf(1,1))
+            else -> {
+                a.add(mutableListOf(1))
+                a.add(mutableListOf(1,1))
+                for(i in 2 until numRows) {
+                    val line = mutableListOf(1)
+                    val pairs = a[i-1].windowed(2) // get pairs from previous line
+                    pairs.forEach { line.add(it.sum()) } // add sums of pairs to new line
+                    line.add(line.lastIndex + 1, 1) // add final 1 to edge
+                    a.add(line)
+                }
+
+                return a
+            }
+        }
+
+        return emptyList()
+
+    }
+
+    fun getRow(rowIndex: Int): List<Int> {
+
+        return generate(rowIndex+1)[rowIndex]
+
+    }
 
 
